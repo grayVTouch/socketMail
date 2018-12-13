@@ -1,8 +1,7 @@
-# mail-client
+# 银行邮件客户端
 
-邮件客户端
+自动抓取银行邮件，解析信用卡账单。
 
 # 技术栈
 
 swoole + php-imap
-# socketMail
