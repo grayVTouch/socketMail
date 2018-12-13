@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<button type="button" id="login">登录</button>
+<button type="button" id="parse">解析</button>
+
+<script src="vue.js"></script>
+<script>
+    let login = document.getElementById('login');
+    let parse = document.getElementById('parse');
+
+    // ws
+    // let ws = new WebSocket('ws://192.168.0.110:9501');
+    // let ws = new WebSocket('ws://192.168.0.115:9009');
+    // let ws = new WebSocket('ws://192.168.0.115:9501');
+    let ws = new WebSocket('ws://106.15.196.35:9009');
+
+    ws.onopen = function(){
+        console.log('ws 连接已经打开');
+    };
+
+    ws.onmessage = function(e){
+        console.log('ws 接收到数据' , e.data);
+    };
+
+    ws.onclose = function(e){
+        console.log('连接已经关闭' , e , e.code , e.data);
+    };
+
+    login.onclick = function () {
+        // let token = 'e82a7e0ae2ff1a55418bafa1b5936ded';
+        // let token = '0ec3d74c663b1d63fb6670e24d68c39f';
+        // let token = '0ec3d74c663b1d63fb6670e24d68c39f';
+        let token = '28b689daa15515f441f7f4bf5eb03e84';
+        ws.send(json({
+            intent: 'login' ,
+            data: {
+                token
+            }
+        }));
+    };
+
+    parse.onclick = function () {
+        ws.send(json({
+            intent: 'parse' ,
+            data: {
+                user_mailbox_id: 1 ,
+                bank_code: []
+            }
+        }));
+    };
+
+    function json(data) {
+        return JSON.stringify(data);
+    }
+</script>
+</body>
+</html>
