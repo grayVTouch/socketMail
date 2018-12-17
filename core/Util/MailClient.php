@@ -93,7 +93,7 @@ class MailClient
         $ids = $this->_client->ids();
         // todo 调试的时候请设置仅抓取 100 封
 //        $ids = array_reverse($ids);
-        $ids = array_slice($ids , 0 , 50);
+//        $ids = array_slice($ids , 0 , 10);
         // 如果正在调试，请直接使用有问题的邮箱id列表！！！！
 //        $ids = [];
         $this->total = count($ids);

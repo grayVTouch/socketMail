@@ -12,9 +12,9 @@ return [
     // 调试模式
     'debug'     => false ,
     // 数据库
-    'mysql'  => 'xzm-test' ,
+    'mysql'  => 'default' ,
     // redis 连接
-    'redis' => 'xzm-test' ,
+    'redis' => 'default' ,
     // websocket 连接
     'websocket' => 'default' ,
 

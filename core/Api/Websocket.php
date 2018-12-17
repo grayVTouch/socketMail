@@ -70,10 +70,13 @@ class Websocket extends Response
             $this->send($fd , self::ERROR , $intent , '已经登录');
             return ;
         }
-        $token  = $data->token ?? '';
-        $user = User::get($token);
+        if (!isset($data->token) || empty($data->token)) {
+            $this->socket->close($fd , 1000 , "必须提供 token");
+            return ;
+        }
+        $user = User::get($data->token);
         if (is_null($user)) {
-            $this->socket->close($fd , 1000 , "未找到当前 token: {$token} 对应用户");
+            $this->socket->close($fd , 1000 , "未找到当前 token: {$data->token} 对应用户");
             return ;
         }
         // 用户上线
@@ -119,8 +122,10 @@ class Websocket extends Response
         }
     }
 
-    // 服务器推：发生错误
-    public function _error($user_id , $intent , $msg = '' , $data = null){
+    // 服务器推：解析错误
+    public function parseError($user_id , $intent , $msg = '' , $data = null){
+        // 更新任务状态
+        $this->redis->taskStatus($user_id , 'none');
         $this->group($user_id , self::ERROR , $intent , $msg , $data);
     }
 

@@ -73,5 +73,11 @@ class Redis
         return json_encode($obj);
     }
 
-
+    // 清空 key
+    public function  flushAll()
+    {
+        $key = sprintf('%s*' , $this->prefix);
+        $keys = $this->native('keys' , $key);
+        return $this->native('del' , $keys);
+    }
 }

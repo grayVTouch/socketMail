@@ -84,14 +84,16 @@ class RedisManager extends RedisKey
             // 没有保存用户，退出
             return ;
         }
+        $conn = [];
         // 已经保存用户信息，删除掉下线的连接
         foreach ($user->conn as $k => $v)
         {
-            if ($v == $conn_id) {
-                // 删除掉下线客户端
-                unset($user->conn[$k]);
+            if ($v != $conn_id) {
+                // 仅保存在线客户端
+                $conn[] = $v;
             }
         }
+        $user->conn = $conn;
         if (empty($user->conn)) {
             // 如果所有客户端都已经下线，那么删除掉 redis 中保存的信息
             $this->del($this->uk($user_id));
@@ -147,5 +149,11 @@ class RedisManager extends RedisKey
             return false;
         }
         return intval($user_id);
+    }
+
+    // 删除 key
+    public function clearKey()
+    {
+
     }
 }
